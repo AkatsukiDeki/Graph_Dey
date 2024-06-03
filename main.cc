@@ -6,13 +6,16 @@ int main() {
     Graph<std::string, double> graph;
 
     // Добавление вершин
+    std::cout << "Step 1: Adding vertices A, B, C, D, E" << std::endl;
     graph.add_vertex("A");
     graph.add_vertex("B");
     graph.add_vertex("C");
     graph.add_vertex("D");
     graph.add_vertex("E");
+    graph.print(); // Вывод текущего состояния графа
 
     // Добавление ребер
+    std::cout << "\nStep 2: Adding edges between vertices" << std::endl;
     graph.add_edge("A", "B", 5.0);
     graph.add_edge("A", "C", 3.0);
     graph.add_edge("B", "D", 2.0);
@@ -20,29 +23,15 @@ int main() {
     graph.add_edge("C", "B", 1.0);
     graph.add_edge("C", "D", 4.0);
     graph.add_edge("D", "E", 3.0);
+    graph.print(); // Вывод текущего состояния графа
 
-    // Вывод всех вершин
-    cout << "Vertices: ";
-    for (const auto& vertex : graph.vertices()) {
-        cout << vertex._val << " ";
-    }
-    cout << endl;
+    // Нахождение оптимальной точки для склада
+    std::cout << "\nStep 3: Finding the optimal warehouse point" << std::endl;
+    std::string optimal_warehouse = graph.find_optimal_warehouse();
 
-    // Вывод всех ребер для вершины "A"
-    cout << "Edges for vertex A: ";
-    for (const auto& edge : graph.edges("A")) {
-        cout << "(" << graph.vertices()[edge._num]._val << ", " << edge._val << ") ";
-    }
-    cout << endl;
-
-    // Обход графа в глубину начиная с вершины "A"
-    cout << "DFS starting from vertex A: ";
-    graph.dfs("A");
-    cout << endl;
-
-    // Выполнение алгоритма Дейкстры для поиска кратчайшего пути от вершины "A"
-    cout << "Shortest distances from vertex A:" << endl;
-    graph.Dijkstra("A", true);
+    // Вывод результата
+    std::cout << "Optimal warehouse point: " << optimal_warehouse << std::endl;
 
     return 0;
 }
+ё
