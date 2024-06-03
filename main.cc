@@ -1,49 +1,48 @@
-#include "graph.h"
 #include <iostream>
-#include <string>
+#include "Graph.h"
 
 int main() {
-    Graph<std::string> g;
+    // Создание графа
+    Graph<std::string, double> graph;
 
-    g.add_vertex("A");
-    g.add_vertex("B");
-    g.add_vertex("C");
-    g.add_vertex("D");
+    // Добавление вершин
+    graph.add_vertex("A");
+    graph.add_vertex("B");
+    graph.add_vertex("C");
+    graph.add_vertex("D");
+    graph.add_vertex("E");
 
-    g.add_edge("A", "B", 5.0);
-    g.add_edge("A", "C", 3.0);
-    g.add_edge("B", "D", 2.0);
-    g.add_edge("C", "D", 1.0);
+    // Добавление ребер
+    graph.add_edge("A", "B", 5.0);
+    graph.add_edge("A", "C", 3.0);
+    graph.add_edge("B", "D", 2.0);
+    graph.add_edge("B", "E", 4.0);
+    graph.add_edge("C", "B", 1.0);
+    graph.add_edge("C", "D", 4.0);
+    graph.add_edge("D", "E", 3.0);
 
-    std::cout << "Vertices: ";
-    for (const auto& v : g.vertices()) {
-        std::cout << v << " ";
+    // Вывод всех вершин
+    cout << "Vertices: ";
+    for (const auto& vertex : graph.vertices()) {
+        cout << vertex._val << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    std::cout << "Edges: ";
-    for (const auto& e : g.edges("A")) {
-        std::cout << "(" << e.from << ", " << e.to << ", " << e.weight << ") ";
+    // Вывод всех ребер для вершины "A"
+    cout << "Edges for vertex A: ";
+    for (const auto& edge : graph.edges("A")) {
+        cout << "(" << graph.vertices()[edge._num]._val << ", " << edge._val << ") ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    std::cout << "Shortest path from A to D: ";
-    for (const auto& e : g.shortest_path("A", "D")) {
-        std::cout << "(" << e.from << ", " << e.to << ", " << e.weight << ") ";
-    }
-    std::cout << std::endl;
+    // Обход графа в глубину начиная с вершины "A"
+    cout << "DFS starting from vertex A: ";
+    graph.dfs("A");
+    cout << endl;
 
-    std::cout << "Depth-First Search (DFS) traversal: ";
-    for (const auto& v : g.dfs("A")) {
-        std::cout << v << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Dijkstra's shortest path from A to D: ";
-    for (const auto& e : g.dijkstra_shortest_path("A", "D")) {
-        std::cout << "(" << e.from << ", " << e.to << ", " << e.weight << ") ";
-    }
-    std::cout << std::endl;
+    // Выполнение алгоритма Дейкстры для поиска кратчайшего пути от вершины "A"
+    cout << "Shortest distances from vertex A:" << endl;
+    graph.Dijkstra("A", true);
 
     return 0;
 }
