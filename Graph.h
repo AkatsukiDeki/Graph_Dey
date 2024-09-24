@@ -26,6 +26,9 @@ private:
 		list<Edge> _edge;
 	};
 	vector<Vertex> _graph;
+
+
+
 	void dfs_h(int from, vector<int>& visited)const {
 		visited[from] = 1;
 		for (auto& i : _graph[from]._edge) {
@@ -88,9 +91,9 @@ public:
 		return (*this)[val]._edge.size();
 	}
 	//VERTEX
-	bool has_vertex(V num) {
+	bool has_vertex(V _num) {
 		try {
-			(*this)[num];
+			(*this)(_num);
 		}
 		catch (invalid_argument& e) {
 			return false;
@@ -145,6 +148,19 @@ public:
 		if (has_vertex(from))
 			(*this)[from]._edge.remove_if([&](Edge& x) { return (_graph[x._num]._val == to && x._val == val); });
 	}
+
+	bool has_negative_weights() {
+		for (const auto& vertex : _graph) {
+			for (const auto& edge : vertex._edge) {
+				if (edge._val < 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
 	//FUNCTIONAL
 	void dfs(V start_vertex) {
 		if (has_vertex(start_vertex)) {
@@ -153,6 +169,10 @@ public:
 		}
 	}
 	vector<double> Dijkstra(V _from, bool flag) {
+		if (has_negative_weights()) {
+			throw std::runtime_error("Граф содержит отрицательные веса. Алгоритм Дейкстры не может быть использован.");
+		}
+
 		auto from = (*this)[_from]._num;
 		vector<double> distance(size(), INF);
 		distance[from] = 0;
@@ -174,6 +194,7 @@ public:
 				}
 			}
 		}
+
 		if (flag) {
 			for (int i = 0; i < size(); i++) {
 				std::cout << "Shortest distance from vertex " << _from << " to vertex " << _graph[i]._val << " is " << distance[i] << std::endl;
